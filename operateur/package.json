@@ -1,0 +1,17 @@
+{
+  "name": "operateur",
+  "version": "1.0.0",
+  "description": "IHM Operateur pour Direct Ace un projet d'étude de SI5 Polytech Nice Sophia Specialite Architecture Logicielle. Special thanks to Adrien Casanova for his kind help",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Fabien Foerster",
+  "license": "MIT",
+  "dependencies": {
+    "amqplib": "^0.3.0",
+    "body-parser": "^1.10.2",
+    "express": "^4.11.1",
+    "morgan": "^1.5.1"
+  }
+}
