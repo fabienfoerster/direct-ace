@@ -8,14 +8,13 @@ cd ..
 #Launching everything
 ```
 mvn clean install
-
-cd data-processor
-mvn exec:java
+cd message-queue
+mvn activemq:run
 
 cd ..
 
-cd message-queue
-mvn activemq:run
+cd data-processor
+mvn exec:java
 
 cd ..
 ```
