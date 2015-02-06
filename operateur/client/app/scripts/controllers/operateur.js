@@ -12,13 +12,18 @@ angular.module('clientApp')
     $scope.playerId = "nadal";
     $scope.matchId = "rollandgarros2014qf2";
     $scope.data = {
+      'score' : 0,
       'aces' : 0 ,
       'forehands' : 0,
       'backhands' : 0
     }
 
     $scope.incremente = function(eventName) {
-      $scope.data[eventName] += 1 ;
+      $scope.setValue(eventName,$scope.data[eventName]+1);
+    };
+
+    $scope.setValue = function(eventName,value) {
+      $scope.data[eventName] = value;
       var json = $scope.createJson(eventName);
       $scope.sendData(json);
     }
