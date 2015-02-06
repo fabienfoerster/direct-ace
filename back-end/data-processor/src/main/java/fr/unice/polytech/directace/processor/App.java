@@ -1,0 +1,73 @@
+package fr.unice.polytech.directace.processor;
+
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.MessageListener;
+import javax.jms.TextMessage;
+import java.util.Random;
+
+
+/**
+ * Message processor application
+ * Consumes messages from the message queue, process data and store raw sensor data into the database
+ */
+public class App implements MessageListener {
+
+	private OutputDataAccess outputDataAccess;
+    private int count;
+
+
+	public App () throws Exception {
+
+		// Create output proxy
+		outputDataAccess = new OutputDataAccess();
+        count=0;
+		// Create input listener
+		InputDataAccess.createMessageListener(this);
+	}
+
+
+	/**
+	 * Executed when a message is received from the message queue
+	 * @param message The sensor data message
+	 */
+	@Override
+	public void onMessage (Message message) {
+		if (message instanceof TextMessage) {
+			try {
+				String jsonString = ((TextMessage) message).getText();
+
+				// TODO: TEMP: Print received JSON message
+				System.out.println(jsonString);
+
+				// Extract sensor information
+				JSONObject jsonObject = new JSONObject(new JSONTokener(jsonString));
+                String id  = jsonObject.getString("id");
+				String name  = jsonObject.getString("event");
+				String date  = jsonObject.getString("date");
+				String value = jsonObject.getString("value");
+				String playerID = jsonObject.getString("playerID");
+				String matchID = jsonObject.getString("matchID");
+
+				// TODO: Make the value pass through multiples processors to process it
+
+				// Save sensor data into the database
+
+				boolean res=outputDataAccess.saveMatchLog(id,name, date, value, playerID, matchID);
+                if(res){
+                    System.out.println("Add in base");
+                }
+			} catch (JMSException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+
+	public static void main (String[] args) throws Exception {
+		new App();
+	}
+}
