@@ -1,10 +1,12 @@
-#! Postgresql database
+#Postgresql database
+```
 cd database
 sudo -u postgres psql postgres < ./SensorsData.sql
 cd ..
 ```
 
 #Launching everything
+```
 mvn clean install
 
 cd data-processor
@@ -16,3 +18,4 @@ cd message-queue
 mvn activemq:run
 
 cd ..
+```
