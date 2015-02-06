@@ -29,3 +29,11 @@ build/Release
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git-
 node_modules
 
+# Created by https://www.gitignore.io
+
+### Bower ###
+bower_components
+.bower-cache
+.bower-registry
+.bower-tmp
+
