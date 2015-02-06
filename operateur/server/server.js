@@ -20,6 +20,16 @@ app.use(bodyParser.json());
 var router = express.Router();              // get an instance of the express Router
 var port = process.env.PORT || 8080;        // set our port
 
+router.use(function(req, res, next) {
+
+       res.header('Access-Control-Allow-Origin', '*');
+       res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+       res.header('Access-Control-Allow-Headers', 'Content-Type');
+
+       next();
+   });
+
+
 router.get('/', function(req,res) {
   res.json({message: 'hooray! welcome to our api!'});
 });
