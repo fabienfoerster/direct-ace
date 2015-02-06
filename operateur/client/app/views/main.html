@@ -4,12 +4,20 @@
   <h4>Resume</h4>
   <p> PlayerID : {{playerId}} | MatchID : {{matchId}}</p>
   <ul>
+    <li> Current Score : {{data.score}} </li>
     <li> Aces : {{data.aces}} </li>
     <li> Forehands : {{ data.forehands}} </li>
     <li> Backhands : {{ data.backhands}} </li>
   </ul>
 
   <p>
+    <button class="btn btn-default" ng-click="setValue('score','0')">0</button>
+    <button class="btn btn-default" ng-click="setValue('score','15')">15</button>
+    <button class="btn btn-default" ng-click="setValue('score','30')">30</button>
+    <button class="btn btn-default" ng-click="setValue('score','40')">40</button>
+    <button class="btn btn-default" ng-click="setValue('score','A')">A</button>
+    <br/>
+    <br/>
     <button type="button" class="btn btn-default btn-lg btn-block" ng-click="incremente('aces')">Ace +1</button>
     <button type="button" class="btn btn-default btn-lg btn-block" ng-click="incremente('forehands')">Forehand +1</button>
     <button type="button" class="btn btn-default btn-lg btn-block" ng-click="incremente('backhands')">Backhand +1</button>

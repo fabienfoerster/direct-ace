@@ -59,6 +59,7 @@ local.then(function(conn) {
     ch.assertQueue(localq);
     ch.consume(localq, function(msg) {
       if (msg !== null) {
+        console.log(msg.content.toString());
         local.then(function(conn) {
           var okremote = conn.createChannel();
           okremote = okremote.then(function(ch) {
