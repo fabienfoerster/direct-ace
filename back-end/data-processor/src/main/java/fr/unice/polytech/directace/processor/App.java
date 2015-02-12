@@ -51,7 +51,6 @@ public class App {
                 QueueingConsumer.Delivery delivery;
                 try {
                     delivery = consumer.nextDelivery();
-                    System.out.println(delivery.getBody());
                     String message = new String(delivery.getBody());
                     System.out.println("Received message: " + message);
                     processMessage(message);
