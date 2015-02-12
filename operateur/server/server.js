@@ -61,10 +61,12 @@ local.then(function(conn) {
       if (msg !== null) {
         remote.then(function(conn) {
           var okremote = conn.createChannel();
-          console.log(msg.content.toString());
-          okremote = okremote.then(function(ch) {
-            ch.assertQueue(remoteq);
-            ch.sendToQueue(remoteq, new Buffer(msg));
+          okremote = okremote.then(function(ch2) {
+            ch2.assertQueue(remoteq);
+            ch2.sendToQueue(remoteq, new Buffer(msg.content.toString()));
+            console.log("Ack");
+            ch.ack(msg);
+
           });
           return okremote;
         }).then(null, console.warn);
@@ -72,9 +74,7 @@ local.then(function(conn) {
       }
     });
   });
-  if(oklocal){
-    ch.ack(msg);
-  }
+
   return oklocal;
 }).then(null, console.warn);
 

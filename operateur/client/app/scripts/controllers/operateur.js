@@ -9,6 +9,7 @@
  */
 angular.module('clientApp')
   .controller('OperateurCtrl', function ($scope,$http) {
+    $scope.id = 0;
     $scope.playerId = "nadal";
     $scope.matchId = "rollandgarros2014qf2";
     $scope.data = {
@@ -23,6 +24,7 @@ angular.module('clientApp')
     };
 
     $scope.setValue = function(eventName,value) {
+      $scope.id += 1;
       $scope.data[eventName] = value;
       var json = $scope.createJson(eventName);
       $scope.sendData(json);
@@ -30,6 +32,7 @@ angular.module('clientApp')
 
     $scope.createJson = function(eventName) {
       var json = {
+        id : String($scope.id),
         playerID : $scope.playerId,
         matchID : $scope.matchId,
         event :  eventName ,
