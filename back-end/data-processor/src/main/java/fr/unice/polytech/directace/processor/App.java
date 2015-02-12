@@ -32,16 +32,17 @@ public class App {
     }
 
     public void start() {
+        System.out.println("Begin of start method");
         ConnectionFactory factory = new ConnectionFactory();
-        factory.setUsername(USER_NAME_PASSWORD);
-        factory.setPassword(USER_NAME_PASSWORD);
-        factory.setHost(DESTINATION_URL);
-        factory.setPort(DESTINATION_PORT);
+//        factory.setUsername(USER_NAME_PASSWORD);
+//        factory.setPassword(USER_NAME_PASSWORD);
+//        factory.setHost(DESTINATION_URL);
+//        factory.setPort(DESTINATION_PORT);
         Connection conn;
         try {
             conn = factory.newConnection();
             Channel channel = conn.createChannel();
-            channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+            //channel.queueDeclare(QUEUE_NAME, false, false, false, null);
             System.out.println(" [*] Waiting for messages. To exit press CTRL+C");
 
             QueueingConsumer consumer = new QueueingConsumer(channel);
@@ -63,7 +64,6 @@ public class App {
             e.printStackTrace();
         }
     }
-
 
     private void processMessage(String message) {
         // Extract sensor information

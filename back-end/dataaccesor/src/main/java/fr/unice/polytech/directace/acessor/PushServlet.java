@@ -16,35 +16,50 @@ import java.io.IOException;
 public class PushServlet extends HttpServlet {
 
     //static final String LAUNCH = "/images/launch.gif";
-    private MatchLog currentScoreLog;
+    private MatchLog currentScoreLog, currentAceLog, currentBackhandsLog, currentForehandsLog;
     public void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
         ServletOutputStream out = res.getOutputStream();  // some binary output
         // Prepare a multipart response
         MultipartResponse multi = new MultipartResponse(res);
+        try {
+            InputDataAccess inputDataAccess=new InputDataAccess();
+            while (true) {
+                    System.out.println("Checking");
+                    MatchLog scoreLog=inputDataAccess.getLastMatchLog("score");
+                    if(!scoreLog.equals(currentScoreLog) && scoreLog.getId()!=null){
+                        multi.startResponse("text/plain");
+                        out.println(scoreLog.toString());
+                        multi.endResponse();
+                        currentScoreLog=scoreLog;
+                    }
+                    MatchLog aceLog=inputDataAccess.getLastMatchLog("ace");
+                    if(!aceLog.equals(currentAceLog) && aceLog.getId()!=null){
+                        multi.startResponse("text/plain");
+                        out.println(aceLog.toString());
+                        multi.endResponse();
+                        currentAceLog=aceLog;
+                    }
+                    MatchLog backhandsLog=inputDataAccess.getLastMatchLog("backhands");
+                    if(!backhandsLog.equals(currentBackhandsLog) && backhandsLog.getId()!=null){
+                        multi.startResponse("text/plain");
+                        out.println(backhandsLog.toString());
+                        multi.endResponse();
+                        currentBackhandsLog=backhandsLog;
+                    }
+                    MatchLog forehandsLog=inputDataAccess.getLastMatchLog("forehands");
+                    if (!forehandsLog.equals(currentForehandsLog) && forehandsLog.getId()!=null){
+                        multi.startResponse("text/plain");
+                        out.println(forehandsLog.toString());
+                        multi.endResponse();
+                        currentForehandsLog=forehandsLog;
+                    }
 
-
-       while (true) {
-
-            try {
-                InputDataAccess inputDataAccess=new InputDataAccess();
-                MatchLog scoreLog=inputDataAccess.getLastMatchLog("score");
-                if(!scoreLog.equals(currentScoreLog)){
-                    multi.startResponse("text/plain");
-                    out.println(scoreLog.toString());
-                    multi.endResponse();
-                    currentScoreLog=scoreLog;
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                break;
+                try { Thread.sleep(2000); } catch (InterruptedException e) { e.printStackTrace(); break;}
             }
-
-
-            try { Thread.sleep(2000); } catch (InterruptedException e) { e.printStackTrace(); break;}
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
 
 
         // Don't forget to end the multipart response

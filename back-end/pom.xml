@@ -13,7 +13,8 @@
 	<modules>
 		<module>message-queue</module>
 		<module>data-processor</module>
-	</modules>
+        <module>dataaccesor</module>
+    </modules>
 
 	<properties>
 		<java.version>1.6</java.version>
