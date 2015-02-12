@@ -68,10 +68,13 @@ local.then(function(conn) {
           });
           return okremote;
         }).then(null, console.warn);
-        ch.ack(msg);
+
       }
     });
   });
+  if(oklocal){
+    ch.ack(msg);
+  }
   return oklocal;
 }).then(null, console.warn);
 
