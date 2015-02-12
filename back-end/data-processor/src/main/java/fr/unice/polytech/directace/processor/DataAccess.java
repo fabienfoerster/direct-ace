@@ -59,12 +59,12 @@ public class DataAccess {
 
     public static void main(String[] args) throws JMSException {
         new DataAccess().postMessage("{\n" +
-                "  \"id\" : \"12\",\n"+
-                "  \"event\": \"name event\",\n" +
+                "  \"id\" : \"21\",\n"+
+                "  \"event\": \"ace\",\n" +
                 "  \"date\" : \"898998989\",\n" +
-                "  \"value\": \"89\",\n" +
-                "  \"playerID\": \"89\" ,\n" +
-                "  \"matchID\": \"89\"\n" +
+                "  \"value\": \"80\",\n" +
+                "  \"playerID\": \"80\" ,\n" +
+                "  \"matchID\": \"80\"\n" +
                 "}");
     }
 }
