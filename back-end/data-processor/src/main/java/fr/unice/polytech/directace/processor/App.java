@@ -1,73 +1,92 @@
 package fr.unice.polytech.directace.processor;
 
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
+import com.rabbitmq.client.QueueingConsumer;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.MessageListener;
-import javax.jms.TextMessage;
-import java.util.Random;
+import java.io.IOException;
 
 
 /**
  * Message processor application
  * Consumes messages from the message queue, process data and store raw sensor data into the database
  */
-public class App implements MessageListener {
+public class App {
 
-	private OutputDataAccess outputDataAccess;
+    private final static String DESTINATION_URL = "54.154.176.223";
+    private final static int DESTINATION_PORT = 15672;
+    private final static String QUEUE_NAME = "sensor-values-queue";
+    private final static String USER_NAME_PASSWORD = "guest";
+
+    private OutputDataAccess outputDataAccess;
     private int count;
 
 
-	public App () throws Exception {
+    public App() throws Exception {
+        // Create output proxy
+        outputDataAccess = new OutputDataAccess();
+        count = 0;
+    }
 
-		// Create output proxy
-		outputDataAccess = new OutputDataAccess();
-        count=0;
-		// Create input listener
-		InputDataAccess.createMessageListener(this);
-	}
+    public void start() {
+        ConnectionFactory factory = new ConnectionFactory();
+        factory.setUsername(USER_NAME_PASSWORD);
+        factory.setPassword(USER_NAME_PASSWORD);
+        factory.setHost(DESTINATION_URL);
+        factory.setPort(DESTINATION_PORT);
+        Connection conn;
+        try {
+            conn = factory.newConnection();
+            Channel channel = conn.createChannel();
+            channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+            System.out.println(" [*] Waiting for messages. To exit press CTRL+C");
 
-
-	/**
-	 * Executed when a message is received from the message queue
-	 * @param message The sensor data message
-	 */
-	@Override
-	public void onMessage (Message message) {
-		if (message instanceof TextMessage) {
-			try {
-				String jsonString = ((TextMessage) message).getText();
-
-				// TODO: TEMP: Print received JSON message
-				System.out.println(jsonString);
-
-				// Extract sensor information
-				JSONObject jsonObject = new JSONObject(new JSONTokener(jsonString));
-                String id  = jsonObject.getString("id");
-				String name  = jsonObject.getString("event");
-				String date  = jsonObject.getString("date");
-				String value = jsonObject.getString("value");
-				String playerID = jsonObject.getString("playerID");
-				String matchID = jsonObject.getString("matchID");
-
-				// TODO: Make the value pass through multiples processors to process it
-
-				// Save sensor data into the database
-
-				boolean res=outputDataAccess.saveMatchLog(id,name, date, value, playerID, matchID);
-                if(res){
-                    System.out.println("Add in base");
+            QueueingConsumer consumer = new QueueingConsumer(channel);
+            channel.basicConsume(QUEUE_NAME, false, consumer);
+            while (true) {
+                QueueingConsumer.Delivery delivery;
+                try {
+                    delivery = consumer.nextDelivery();
+                    String message = new String(delivery.getBody());
+                    System.out.println("Received message: " + message);
+                    processMessage(message);
+                    System.out.println("Done !");
+                    channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
+                } catch (InterruptedException ie) {
+                    continue;
                 }
-			} catch (JMSException e) {
-				e.printStackTrace();
-			}
-		}
-	}
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
-	public static void main (String[] args) throws Exception {
-		new App();
-	}
+    private void processMessage(String message) {
+        // Extract sensor information
+        JSONObject jsonObject = new JSONObject(new JSONTokener(message));
+        String id = jsonObject.getString("id");
+        String name = jsonObject.getString("event");
+        String date = jsonObject.getString("date");
+        String value = jsonObject.getString("value");
+        String playerID = jsonObject.getString("playerID");
+        String matchID = jsonObject.getString("matchID");
+
+        // TODO: Make the value pass through multiples processors to process it
+
+        // Save sensor data into the database
+
+        boolean res = outputDataAccess.saveMatchLog(id, name, date, value, playerID, matchID);
+        if (res) {
+            System.out.println("Add in base");
+        }
+    }
+
+
+    public static void main(String[] args) throws Exception {
+        new App().start();
+    }
 }
