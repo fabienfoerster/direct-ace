@@ -28,28 +28,28 @@ public class PushServlet extends HttpServlet {
                     System.out.println("Checking");
                     MatchLog scoreLog=inputDataAccess.getLastMatchLog("score");
                     if(!scoreLog.equals(currentScoreLog) && scoreLog.getId()!=null){
-                        multi.startResponse("text/plain");
+                        multi.startResponse("application/json");
                         out.println(scoreLog.toString());
                         multi.endResponse();
                         currentScoreLog=scoreLog;
                     }
-                    MatchLog aceLog=inputDataAccess.getLastMatchLog("ace");
+                    MatchLog aceLog=inputDataAccess.getLastMatchLog("aces");
                     if(!aceLog.equals(currentAceLog) && aceLog.getId()!=null){
-                        multi.startResponse("text/plain");
+                        multi.startResponse("application/json");
                         out.println(aceLog.toString());
                         multi.endResponse();
                         currentAceLog=aceLog;
                     }
                     MatchLog backhandsLog=inputDataAccess.getLastMatchLog("backhands");
                     if(!backhandsLog.equals(currentBackhandsLog) && backhandsLog.getId()!=null){
-                        multi.startResponse("text/plain");
+                        multi.startResponse("application/json");
                         out.println(backhandsLog.toString());
                         multi.endResponse();
                         currentBackhandsLog=backhandsLog;
                     }
                     MatchLog forehandsLog=inputDataAccess.getLastMatchLog("forehands");
                     if (!forehandsLog.equals(currentForehandsLog) && forehandsLog.getId()!=null){
-                        multi.startResponse("text/plain");
+                        multi.startResponse("application/json");
                         out.println(forehandsLog.toString());
                         multi.endResponse();
                         currentForehandsLog=forehandsLog;

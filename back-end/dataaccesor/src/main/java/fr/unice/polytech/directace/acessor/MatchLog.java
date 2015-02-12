@@ -59,13 +59,13 @@ public class MatchLog {
 
     @Override
     public String toString() {
-        return "MatchLog{" +
-                "id='" + id + '\'' +
-                ", eventName='" + eventName + '\'' +
-                ", value='" + value + '\'' +
-                ", date='" + date + '\'' +
-                ", playerID='" + playerID + '\'' +
-                ", matchID='" + matchID + '\'' +
+        return "{" +
+                "\"id\" :'" + id + '\'' +
+                ", \"eventName\" :'" + eventName + '\'' +
+                ", \"value\" :'" + value + '\'' +
+                ", \"date\" :'" + date + '\'' +
+                ", \"playerID\" :'" + playerID + '\'' +
+                ", \"matchID\" :'" + matchID + '\'' +
                 '}';
     }
 
@@ -96,4 +96,5 @@ public class MatchLog {
         result = 31 * result + (matchID != null ? matchID.hashCode() : 0);
         return result;
     }
+
 }
