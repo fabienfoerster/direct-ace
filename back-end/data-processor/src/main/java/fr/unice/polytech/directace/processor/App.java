@@ -34,10 +34,10 @@ public class App {
     public void start() {
         System.out.println("Begin of start method");
         ConnectionFactory factory = new ConnectionFactory();
-        factory.setUsername(USER_NAME_PASSWORD);
-        factory.setPassword(USER_NAME_PASSWORD);
-        factory.setHost(DESTINATION_URL);
-        factory.setPort(DESTINATION_PORT);
+//        factory.setUsername(USER_NAME_PASSWORD);
+//        factory.setPassword(USER_NAME_PASSWORD);
+//        factory.setHost(DESTINATION_URL);
+//        factory.setPort(DESTINATION_PORT);
         Connection conn;
         try {
             conn = factory.newConnection();
@@ -51,6 +51,7 @@ public class App {
                 QueueingConsumer.Delivery delivery;
                 try {
                     delivery = consumer.nextDelivery();
+                    System.out.println(delivery.getBody());
                     String message = new String(delivery.getBody());
                     System.out.println("Received message: " + message);
                     processMessage(message);
