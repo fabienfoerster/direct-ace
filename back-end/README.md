@@ -22,5 +22,9 @@ cd ..
 cd dataacessor
 mvn jetty:run
 
+//yolo
+wget http://54.154.176.223:8080/dataacessor/test
+
+
 cd ..
 ```
