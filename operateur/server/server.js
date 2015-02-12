@@ -3,9 +3,9 @@ var app = express();
 var bodyParser = require('body-parser');
 var morgan = require('morgan');
 var local = require('amqplib').connect('amqp://localhost');
-//var remote = require('amqplib').connect('amqp:https://sqs.us-west-2.amazonaws.com/921269828628/direct-ace-remote');
+var remote = require('amqplib').connect('amqp://54.154.176.223');
 var localq = 'direct-ace-local';
-var remoteq = 'direct-ace-remote';
+var remoteq = 'sensor-values-queue';
 // set up our express application
 // HTTP request logger
 app.use(morgan('dev'));
@@ -59,19 +59,22 @@ local.then(function(conn) {
     ch.assertQueue(localq);
     ch.consume(localq, function(msg) {
       if (msg !== null) {
-        console.log(msg.content.toString());
-        local.then(function(conn) {
+        remote.then(function(conn) {
           var okremote = conn.createChannel();
+          console.log(msg.content.toString());
           okremote = okremote.then(function(ch) {
             ch.assertQueue(remoteq);
             ch.sendToQueue(remoteq, new Buffer(msg));
           });
           return okremote;
         }).then(null, console.warn);
-        ch.ack(msg);
+
       }
     });
   });
+  if(oklocal){
+    ch.ack(msg);
+  }
   return oklocal;
 }).then(null, console.warn);
 

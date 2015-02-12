@@ -1,15 +1,20 @@
+/*
+
 package fr.unice.polytech.directace.processor;
 
+import com.rabbitmq.client.Connection;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.json.JSONObject;
 
 import javax.jms.*;
 
 
+*/
 /**
  * DataAccess class
  * Interface to post sensor values into the message queue
- */
+ *//*
+
 public class DataAccess {
 
 	private final static String DESTINATION_URL = "tcp://localhost:61616";
@@ -19,9 +24,11 @@ public class DataAccess {
 	private Connection connection;
 
 
-	/**
+	*/
+/**
 	 * Get the class instance
-	 */
+	 *//*
+
 	public static synchronized DataAccess getInstance () throws JMSException {
 		if (instance == null) {
 			instance = new DataAccess();
@@ -30,9 +37,11 @@ public class DataAccess {
 	}
 
 
-	/**
+	*/
+/**
 	 * Private constructor
-	 */
+	 *//*
+
 	private DataAccess () throws JMSException {
 
 		ConnectionFactory factory = new ActiveMQConnectionFactory(DESTINATION_URL);
@@ -41,12 +50,14 @@ public class DataAccess {
 	}
 
 
-	/**
+	*/
+/**
 	 * Post a sensor message into the message queue
 	 *
 	 * @param json The JSON object that contains sensor data
 	 * @return true if data insert is successful, false otherwise
-	 */
+	 *//*
+
 	public void postMessage (String json) throws JMSException {
 
 		Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
@@ -69,3 +80,5 @@ public class DataAccess {
     }
 }
 
+
+*/
